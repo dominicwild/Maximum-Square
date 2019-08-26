@@ -95,9 +95,10 @@ public class MaximumSquare {
                 return 1;
             }
         } else {
+            //Check 4 possible subsquares to see if one contains all 1's
             int reduceDimension = width - maxPossible;
             maxPossible = MaxSquare(matrix,xMin+reduceDimension,xMax,yMin+reduceDimension,yMax); 
-            if(maxPossible == width-1){
+            if(maxPossible == width-1){ //If width-1 is the answer, this is the max sized square we can have for this matrix
                 return maxPossible;
             }
             maxPossible = MaxSquare(matrix,xMin,xMax-reduceDimension,yMin,yMax-reduceDimension); 
