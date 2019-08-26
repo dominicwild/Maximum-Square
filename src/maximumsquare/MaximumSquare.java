@@ -120,22 +120,41 @@ public class MaximumSquare {
         } else {
             //Check 4 possible subsquares to see if one contains all 1's
             int reduceDimension = width - maxPossible;
-            maxPossible = MaxSquare(matrix,xMin+reduceDimension,xMax,yMin+reduceDimension,yMax); 
+            maxPossible = MaxSquareSub(matrix,xMin+reduceDimension,xMax,yMin+reduceDimension,yMax,0); //First assignment gets a free pass, because maxPossible is hypothetical in the first call (it doesn't concretely find a square of 1's)
             if(maxPossible == width-1){ //If width-1 is the answer, this is the max sized square we can have for this matrix
                 return maxPossible;
             }
-            maxPossible = MaxSquare(matrix,xMin,xMax-reduceDimension,yMin,yMax-reduceDimension); 
+            maxPossible = MaxSquareSub(matrix,xMin,xMax-reduceDimension,yMin,yMax-reduceDimension,maxPossible); 
             if(maxPossible == width-1){
                 return maxPossible;
             }
-            maxPossible = MaxSquare(matrix,xMin+reduceDimension,xMax,yMin,yMax-reduceDimension); 
+            maxPossible = MaxSquareSub(matrix,xMin+reduceDimension,xMax,yMin,yMax-reduceDimension,maxPossible); 
             if(maxPossible == width-1){
                 return maxPossible;
             }
-            maxPossible = MaxSquare(matrix,xMin,xMax-reduceDimension,yMin+reduceDimension,yMax); 
+            maxPossible = MaxSquareSub(matrix,xMin,xMax-reduceDimension,yMin+reduceDimension,yMax,maxPossible); 
         }
         
         return maxPossible;
+    }
+    
+    /**
+     * Returns the max possible square of 1's taking into consideration the current maxPossible value.
+     * @param matrix An array of strings forming a matrix of 1's and 0's
+     * @param xMin The minimum x bound of the submatrix to consider.
+     * @param xMax The maximum x bound of the submatrix to consider.
+     * @param yMin The minimum y bound of the submatrix to consider.
+     * @param yMax The maximum y bound of the submatrix to consider.
+     * @param maxPossible The maximum possible currently under consideration
+     * @return The size of the largest submatrix of 1's
+     */
+    public static int MaxSquareSub(String[] matrix, int xMin, int xMax, int yMin, int yMax, int maxPossible){
+        int subMax = MaxSquare(matrix,xMin,xMax,yMin,yMax); 
+        if(subMax > maxPossible){ //Only return the largest of the two values
+            return subMax;
+        } else {
+            return maxPossible;
+        }
     }
     
     /**
@@ -165,6 +184,12 @@ public class MaximumSquare {
     }
 
     public static void main(String[] args) {
+        System.out.println(MaximalSquare(new String[]{"01001", "11111", "01011", "11111", "01111", "11111"})); //3
+        System.out.println(MaximalSquare(new String[]{"10100", "10111", "11111", "10010"})); //2
+        System.out.println(MaximalSquare(new String[]{"1111", "1111"})); //2
+        System.out.println(MaximalSquare(new String[]{"01001", "11111", "01011", "11011"})); //2
+        System.out.println(MaximalSquare(new String[]{"101101", "111111", "010111", "111111"})); //3
+        System.out.println(MaximalSquare(new String[]{"101101", "111111", "011111", "111111", "001111", "011111"})); //4
         System.out.println(MaximalSquare(new String[]{"1100", "0101", "0101","0101"})); //1
         System.out.println(MaximalSquare(new String[]{"1111", "1111", "1111","1111"})); //4
         System.out.println(MaximalSquare(new String[]{"1111", "1111", "1111","1110"})); //3
