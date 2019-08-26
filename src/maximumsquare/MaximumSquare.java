@@ -44,9 +44,9 @@ public class MaximumSquare {
 
                 int diff = matrix.length - matrix[0].length(); //How much larger the length is
 
-                for (String s : matrix) { //Append 0's until the same length
-                    for (int i = 0; i < diff; i++) {
-                        s += "0";
+                for (int i=0;i<matrix.length;i++) { //Append 0's until the same length
+                    for (int j = 0;j < diff; j++) {
+                        matrix[i] += "0";
                     }
                 }
             } else { //Width is greater than height, add rows to compensate
