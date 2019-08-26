@@ -3,7 +3,7 @@ package maximumsquare;
 import java.util.Arrays;
 
 /**
- * Have the function MaximalSquare(strArr) take the strArr parameter being
+ * Have the function MaximalSquare take a string array parameter being
  * passed which will be a 2D matrix of 0 and 1's, and determine the area of the
  * largest square submatrix that contains all 1's. A square submatrix is one of
  * equal width and height, and your program should return the area of the
@@ -21,13 +21,22 @@ import java.util.Arrays;
  */
 public class MaximumSquare {
 
+    /**
+     * Determines the squared size of the largest submatrix of 1's in a matrix.
+     * @param matrix An array of strings forming a matrix of 1's and 0's 
+     * @return The squared size of the largest submatrix of 1's
+     */
     public static String MaximalSquare(String[] matrix) {
-        
-        matrix = ensureSquare(matrix);
-        return MaxSquare(matrix) + "";
-
+        matrix = ensureSquare(matrix); 
+        int max = MaxSquare(matrix);
+        return Integer.toString(max*max);
     }
     
+    /**
+     * Ensures the matrix is square of n by n. Adding extra 0's where blanks are detected. Assumes the input is at least a rectangle.
+     * @param matrix The rectangle matrix to modify.
+     * @return The square matrix.
+     */
     public static String[] ensureSquare(String[] matrix){
         //Make the matrix a square, if it isn't already
         if (matrix.length != matrix[0].length()) {
@@ -60,17 +69,31 @@ public class MaximumSquare {
         return matrix;
     }
 
+    /**
+     * Makes a string with repeating characters.
+     * @param c The character to repeat.
+     * @param repeatNum The number of times to repeat the character c in a string.
+     * @return The string of c repeated repeatNum times.
+     */
     public static String repeatString(char c, int repeatNum) {
         char[] repeat = new char[repeatNum];
         Arrays.fill(repeat, c);
         return new String(repeat);
     }
     
-    //Assumes matrix is a square
+    /**
+     * Assumes matrix is a square of 1's and 0's. Outputs the maximum possible submatrix defined by bounds xMin, xMax, yMin, yMax in the passed matrix.
+     * @param matrix An array of strings forming a matrix of 1's and 0's
+     * @param xMin The minimum x bound of the submatrix to consider.
+     * @param xMax The maximum x bound of the submatrix to consider.
+     * @param yMin The minimum y bound of the submatrix to consider.
+     * @param yMax The maximum y bound of the submatrix to consider.
+     * @return The size of the largest submatrix of 1's
+     */
     public static int MaxSquare(String[] matrix, int xMin, int xMax, int yMin, int yMax) {
 
         int width = xMax - xMin; //Width of square we are checking
-        int maxPossible = width;
+        int maxPossible = width; //The maximum possible square of all 1's that may currently exist in this matrix
 
         matrixLoop:
         for (int i = yMin; i < yMax; i++) {//Iterate all rows
@@ -115,6 +138,15 @@ public class MaximumSquare {
         return maxPossible;
     }
     
+    /**
+     * Handles the special case where the bounds determine a submatrix of size 2x2
+     * @param matrix An array of strings forming a matrix of 1's and 0's
+     * @param xMin The minimum x bound of the submatrix to consider.
+     * @param xMax The maximum x bound of the submatrix to consider.
+     * @param yMin The minimum y bound of the submatrix to consider.
+     * @param yMax The maximum y bound of the submatrix to consider.
+     * @return The size of the largest submatrix of 1's
+     */
     public static boolean MaxSquareTwoByTwo(String[] matrix,int xMin, int xMax,int yMin, int yMax){
         boolean num1 = Integer.valueOf(matrix[yMin].charAt(xMin)) != 48; //48 is the ASCII code for 0
         boolean num2 = Integer.valueOf(matrix[yMin].charAt(xMax-1)) != 48;
@@ -123,17 +155,22 @@ public class MaximumSquare {
         return num1 || num2 || num3 || num4; //Returns true if any number is  1
     }
     
+    /**
+     * Short-hand for starting the recursive function in a neat way.
+     * @param matrix An array of strings forming a matrix of 1's and 0's 
+     * @return The size of the largest submatrix of 1's
+     */
     public static int MaxSquare(String[] matrix){
         return MaxSquare(matrix,0,matrix[0].length(),0,matrix.length);
     }
 
     public static void main(String[] args) {
-        System.out.println(MaximalSquare(new String[]{"1100", "0101", "0101","0101"}));
-        System.out.println(MaximalSquare(new String[]{"1111", "1111", "1111","1111"}));
-        System.out.println(MaximalSquare(new String[]{"1111", "1111", "1111","1110"}));
-        System.out.println(MaximalSquare(new String[]{"1111", "1111", "1101","1111"}));
-        System.out.println(MaximalSquare(new String[]{"0111", "1111", "1111", "1111"}));
-        System.out.println(MaximalSquare(new String[]{"0111", "1101", "0111"}));
+        System.out.println(MaximalSquare(new String[]{"1100", "0101", "0101","0101"})); //1
+        System.out.println(MaximalSquare(new String[]{"1111", "1111", "1111","1111"})); //4
+        System.out.println(MaximalSquare(new String[]{"1111", "1111", "1111","1110"})); //3
+        System.out.println(MaximalSquare(new String[]{"1111", "1111", "1101","1111"})); //2
+        System.out.println(MaximalSquare(new String[]{"0111", "1111", "1111", "1111"}));//3
+        System.out.println(MaximalSquare(new String[]{"0111", "1101", "0111"})); //1
     }
 
 }
